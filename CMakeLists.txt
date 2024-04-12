@@ -60,11 +60,12 @@ set(STM32_CUBEMX_GENERATED_FILES
 
   Inc/main.hpp
   Inc/stm32f4xx_hal_conf.h
-  # Inc/stm32f4xx_it.h
+  Inc/stm32f4xx_it.h
+  Inc/stm32_assert.h
 
   Src/main.cpp
   # Src/stm32f4xx_hal_msp.c
-  # Src/stm32f4xx_it.c
+  Src/stm32f4xx_it.c
   Src/system_stm32f4xx.c
 
   startup_stm32f446xx.s
@@ -75,6 +76,7 @@ add_executable(${EXECUTABLE} ${STM32_CUBEMX_GENERATED_FILES})
 target_compile_definitions(${EXECUTABLE} PRIVATE
   -DUSE_HAL_DRIVER
   -DUSE_FULL_LL_DRIVER
+  -DUSE_FULL_ASSERT
   -DSTM32F446xx
 )
 target_include_directories(${EXECUTABLE} PRIVATE
