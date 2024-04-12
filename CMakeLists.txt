@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.22...3.28)
 project(STM32F446RE_CubeMX_CMake_Demo VERSION 1.0 LANGUAGES ASM C CXX)
 
 # Use the arm-none-eabi toolchain
-# set(CMAKE_TOOLCHAIN_FILE arm-none-eabi.cmake)
 include(arm-none-eabi.cmake)
 
 # Set CMake C/C++/ASM standards
@@ -14,6 +13,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # Will not generate compile_commands otherwise
 
 set(STM32_CUBEMX_GENERATED_FILES
+
+  # HAL sources
   # Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c
   # Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c
   # Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c
@@ -32,10 +33,33 @@ set(STM32_CUBEMX_GENERATED_FILES
   # Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c
   # Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c
   # Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.c
-  # Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c
+
+  # Low-layer sources
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_crc.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_dac.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_dma.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_dma2d.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_exti.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_fmc.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_fmpi2c.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_fsmc.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_gpio.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_i2c.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_lptim.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_pwr.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_rcc.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_rng.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_rtc.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_sdmmc.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_spi.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_tim.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usart.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c
+  Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_utils.c
 
   Inc/main.hpp
-  # Inc/stm32f4xx_hal_conf.h
+  Inc/stm32f4xx_hal_conf.h
   # Inc/stm32f4xx_it.h
 
   Src/main.cpp
@@ -49,12 +73,13 @@ set(STM32_CUBEMX_GENERATED_FILES
 set(EXECUTABLE ${PROJECT_NAME}.o)
 add_executable(${EXECUTABLE} ${STM32_CUBEMX_GENERATED_FILES})
 target_compile_definitions(${EXECUTABLE} PRIVATE
-  # -DUSE_HAL_DRIVER
+  -DUSE_HAL_DRIVER
+  -DUSE_FULL_LL_DRIVER
   -DSTM32F446xx
 )
 target_include_directories(${EXECUTABLE} PRIVATE
   Inc
-  # Drivers/STM32F4xx_HAL_Driver/Inc
+  Drivers/STM32F4xx_HAL_Driver/Inc
   Drivers/CMSIS/Device/ST/STM32F4xx/Include
   Drivers/CMSIS/Include
 )
